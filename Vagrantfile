@@ -102,6 +102,23 @@ Vagrant.configure("2") do |config|
 		vb.customize [ "guestproperty", "set", :id, "/Chassis/synced_folders", JSON.dump( full_synced ), "--flags", "TRANSIENT,RDONLYGUEST" ]
 	end
 
+	config.vm.provider "docker" do |d, override|
+		override.vm.box = nil
+
+		mapped_paths = module_paths.map { |rel_path| "/vagrant/" + rel_path }
+
+		d.build_dir = "."
+		d.build_args = [
+			# Docker 1.9 and later :|
+			# "--build-arg puppet_modulepaths=" + mapped_paths.join(':')
+		]
+		# d.has_ssh = true
+		# d.ports = ["80"]
+		# d.remains_running = true
+		d.vagrant_vagrantfile = "Vagrantfile.docker"
+	end
+
+
 	# We <3 Ubuntu LTS
 	config.vm.box = "bento/ubuntu-16.04"
 
