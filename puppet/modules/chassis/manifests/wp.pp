@@ -43,7 +43,7 @@ define chassis::wp (
 		}
 	}
 	else {
-		chassis::site { $name:
+		chassis::core { $name:
 			location          => $location,
 			wpdir             => $wpdir,
 			contentdir        => $contentdir,
